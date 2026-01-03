@@ -21,11 +21,7 @@
       "categories": ["Security, Fraud & Compliance", "IT Operations"],
       "developmentStatus": "Production/Stable"
     },
-    "commonInformationModels": {
-      "Network Traffic": "Partial support for firewall events",
-      "Authentication": "Partial support for VPN authentication",
-      "Intrusion Detection": "Partial support for Snort/Suricata events"
-    },
+    "commonInformationModels": null,
     "license": {
       "name": "Apache License 2.0",
       "text": "LICENSE",
@@ -48,7 +44,7 @@
   "incompatibleApps": null,
   "platformRequirements": {
     "splunk": {
-      "Enterprise": ">=8.0.0"
+      "Enterprise": "10.0.0,10.1.0"
     }
   },
   "supportedDeployments": ["_standalone", "_distributed", "_search_head_clustering"]
