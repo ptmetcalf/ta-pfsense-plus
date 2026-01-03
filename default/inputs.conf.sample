@@ -1,0 +1,20 @@
+[udp://1514]
+index = pfsense
+sourcetype = pfsense
+connection_host = dns
+no_appending_timestamp = true
+disabled = 0
+
+[udp://1515]
+index = pfsense
+sourcetype = pfsense:dnsbl
+connection_host = dns
+no_appending_timestamp = true
+disabled = 0
+
+[udp://1516]
+index = pfsense
+sourcetype = pfsense:iplog
+connection_host = dns
+no_appending_timestamp = true
+disabled = 0

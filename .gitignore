@@ -1,0 +1,24 @@
+# Splunk package files
+*.spl
+*.tar.gz
+*.tgz
+dist/
+
+# AppInspect reports
+appinspect*.html
+appinspect*.json
+
+# Local Splunk files
+local/
+local.meta
+
+# IDE and editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS files
+.DS_Store
+Thumbs.db
