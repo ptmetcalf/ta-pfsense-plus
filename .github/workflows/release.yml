@@ -17,6 +17,8 @@ jobs:
     concurrency:
       group: release-${{ github.event.workflow_run.head_sha || github.sha }}
       cancel-in-progress: true
+    env:
+      APP_NAME: ta-pfsense-plus
     if: ${{ github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success' }}
     steps:
       - name: Checkout
@@ -39,7 +41,6 @@ jobs:
       - name: Create app archive
         if: ${{ steps.tag.outputs.tag != '' }}
         run: |
-          APP_NAME="ta-pfsense-plus"
           TAR_NAME="${APP_NAME}-${{ steps.tag.outputs.tag }}.tgz"
           TAR_PATH="${RUNNER_TEMP}/${TAR_NAME}"
           tar \
@@ -56,7 +57,6 @@ jobs:
             -czf "${TAR_PATH}" -C .. ta-pfsense-plus
           echo "TAR_NAME=${TAR_NAME}" >> "$GITHUB_ENV"
           echo "TAR_PATH=${TAR_PATH}" >> "$GITHUB_ENV"
-          echo "APP_NAME=${APP_NAME}" >> "$GITHUB_ENV"
 
       - name: Set up Python
         if: ${{ steps.tag.outputs.tag != '' }}
