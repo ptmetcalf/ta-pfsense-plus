@@ -5,5 +5,12 @@
 
 ### Features
 
+* initial release ([5d89262](https://github.com/ptmetcalf/ta-pfsense-plus/commit/5d892627061b3f522b2bf2ec263e5ce94a5ae639))
+
+## [1.0.0](https://github.com/ptmetcalf/ta-pfsense-plus/compare/v1.0.0...v1.0.0) (2026-01-04)
+
+
+### Features
+
 * initial release ([ef0489b](https://github.com/ptmetcalf/ta-pfsense-plus/commit/ef0489bf9e73a9154966b3ba92e9e01531bac501))
 * update app configuration to include check_for_updates setting ([f5fb543](https://github.com/ptmetcalf/ta-pfsense-plus/commit/f5fb5432aa9e4f38e13d65a3ad4fb91959440ba0))
