@@ -3,6 +3,7 @@
 *.tar.gz
 *.tgz
 dist/
+.venv-appinspect/
 
 # AppInspect reports
 appinspect*.html

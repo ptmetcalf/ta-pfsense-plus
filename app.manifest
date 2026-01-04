@@ -1,5 +1,5 @@
 {
-  "schemaVersion": "1.0.0",
+  "schemaVersion": "2.0.0",
   "info": {
     "title": "TA-pfsense Plus",
     "id": {
@@ -10,49 +10,59 @@
     "author": [
       {
         "name": "Paul Metcalf",
-        "email": "",
-        "company": ""
+        "email": null,
+        "company": null
       }
     ],
-    "releaseDate": null,
-    "description": "Technology Add-on for pfSense logs. Provides sourcetypes, parsing, and lookups for firewall, DNS, VPN, IDS/IPS, and pfBlockerNG data including DNSBL and IP block logs.",
+    "releaseDate": "2026-01-03",
+    "description": "Technology Add-on for pfSense logs, including DNSBL and pfBlockerNG IP.",
     "classification": {
-      "intendedAudience": "IT Professionals",
+      "intendedAudience": "Network and Security Operations",
       "categories": [
-        "Security, Fraud & Compliance",
-        "IT Operations"
+        "IT Operations",
+        "Security"
       ],
       "developmentStatus": "Production/Stable"
     },
-    "commonInformationModels": null,
+    "commonInformationModels": {
+      "Network Traffic": ">=4.0.0",
+      "Authentication": ">=4.0.0",
+      "Intrusion Detection": ">=4.0.0",
+      "Network Resolution": ">=4.0.0"
+    },
     "license": {
       "name": "Apache License 2.0",
-      "text": "LICENSE",
-      "uri": "http://www.apache.org/licenses/LICENSE-2.0"
+      "text": "./LICENSE",
+      "uri": "https://www.apache.org/licenses/LICENSE-2.0"
     },
     "privacyPolicy": {
-      "name": null,
+      "name": "Privacy Policy",
       "text": null,
       "uri": null
     },
     "releaseNotes": {
       "name": "README",
-      "text": "README.md",
-      "uri": ""
+      "text": "./README.md",
+      "uri": null
     }
   },
-  "dependencies": null,
-  "tasks": null,
-  "inputGroups": null,
-  "incompatibleApps": null,
+  "dependencies": {},
+  "tasks": [],
+  "inputGroups": {},
+  "incompatibleApps": {},
   "platformRequirements": {
     "splunk": {
-      "Enterprise": ">=8.0.0"
+      "Enterprise": "*"
     }
   },
   "supportedDeployments": [
     "_standalone",
     "_distributed",
     "_search_head_clustering"
+  ],
+  "targetWorkloads": [
+    "_search_heads",
+    "_indexers",
+    "_forwarders"
   ]
 }
