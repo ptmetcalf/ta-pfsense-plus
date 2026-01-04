@@ -1,0 +1,101 @@
+name: release
+
+on:
+  push:
+    tags:
+      - "v*"
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: "Release tag (e.g. v1.2.3)"
+        required: true
+        type: string
+
+permissions:
+  contents: write
+
+jobs:
+  build-and-release:
+    runs-on: ubuntu-latest
+    concurrency:
+      group: release-${{ github.sha }}
+      cancel-in-progress: true
+    env:
+      APP_NAME: ta-pfsense-plus
+      TAG_NAME: ${{ github.event_name == 'workflow_dispatch' && inputs.tag || github.ref_name }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Create app archive
+        if: ${{ env.TAG_NAME != '' }}
+        run: |
+          TAR_NAME="${APP_NAME}-${TAG_NAME}.tgz"
+          TAR_PATH="${RUNNER_TEMP}/${TAR_NAME}"
+          python - <<'PY'
+          import json
+          import re
+          from pathlib import Path
+
+          manifest_path = Path("app.manifest")
+          app_conf_path = Path("default/app.conf")
+          version = json.loads(manifest_path.read_text())["info"]["id"]["version"]
+          text = app_conf_path.read_text()
+          for section in ("launcher", "id"):
+              pattern = rf"(?ms)(\\[{section}\\][^\\[]*?^version\\s*=)\\s*\\d+\\.\\d+\\.\\d+"
+              text, count = re.subn(pattern, rf"\\1 {version}", text)
+              if count == 0:
+                  raise SystemExit(f"Missing version in [{section}] stanza")
+          app_conf_path.write_text(text)
+          PY
+          tar \
+            --exclude="ta-pfsense-plus/.git" \
+            --exclude="ta-pfsense-plus/.github" \
+            --exclude="ta-pfsense-plus/.gitignore" \
+            --exclude="ta-pfsense-plus/.release-please-config.json" \
+            --exclude="ta-pfsense-plus/.release-please-manifest.json" \
+            --exclude="ta-pfsense-plus/.claude" \
+            --exclude="ta-pfsense-plus/.DS_Store" \
+            --exclude="ta-pfsense-plus/.venv-appinspect" \
+            --exclude="ta-pfsense-plus/dist" \
+            --exclude="ta-pfsense-plus/tools" \
+            -czf "${TAR_PATH}" -C .. ta-pfsense-plus
+          echo "TAR_NAME=${TAR_NAME}" >> "$GITHUB_ENV"
+          echo "TAR_PATH=${TAR_PATH}" >> "$GITHUB_ENV"
+
+      - name: Set up Python
+        if: ${{ env.TAG_NAME != '' }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install AppInspect
+        if: ${{ env.TAG_NAME != '' }}
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install splunk-appinspect
+
+      - name: Run AppInspect
+        if: ${{ env.TAG_NAME != '' }}
+        run: |
+          splunk-appinspect inspect "${TAR_PATH}" \
+            --mode precert \
+            --data-format json \
+            --output-file "${APP_NAME}-appinspect.json" \
+            --ci
+
+      - name: Upload AppInspect report
+        if: ${{ env.TAG_NAME != '' }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ env.APP_NAME }}-appinspect
+          path: ${{ env.APP_NAME }}-appinspect.json
+
+      - name: Upload release asset
+        if: ${{ env.TAG_NAME != '' }}
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release upload "${TAG_NAME}" "${TAR_PATH}" --clobber
