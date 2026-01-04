@@ -1,0 +1,68 @@
+{
+  "schemaVersion": "2.0.0",
+  "info": {
+    "title": "TA-pfsense Plus",
+    "id": {
+      "group": null,
+      "name": "ta-pfsense-plus",
+      "version": "1.0.0"
+    },
+    "author": [
+      {
+        "name": "Paul Metcalf",
+        "email": null,
+        "company": null
+      }
+    ],
+    "releaseDate": "2026-01-03",
+    "description": "Technology Add-on for pfSense logs, including DNSBL and pfBlockerNG IP.",
+    "classification": {
+      "intendedAudience": "Network and Security Operations",
+      "categories": [
+        "IT Operations",
+        "Security"
+      ],
+      "developmentStatus": "Production/Stable"
+    },
+    "commonInformationModels": {
+      "Network Traffic": ">=4.0.0",
+      "Authentication": ">=4.0.0",
+      "Intrusion Detection": ">=4.0.0",
+      "Network Resolution": ">=4.0.0"
+    },
+    "license": {
+      "name": "Apache License 2.0",
+      "text": "./LICENSE",
+      "uri": "https://www.apache.org/licenses/LICENSE-2.0"
+    },
+    "privacyPolicy": {
+      "name": "Privacy Policy",
+      "text": null,
+      "uri": null
+    },
+    "releaseNotes": {
+      "name": "README",
+      "text": "./README.md",
+      "uri": null
+    }
+  },
+  "dependencies": {},
+  "tasks": [],
+  "inputGroups": {},
+  "incompatibleApps": {},
+  "platformRequirements": {
+    "splunk": {
+      "Enterprise": "*"
+    }
+  },
+  "supportedDeployments": [
+    "_standalone",
+    "_distributed",
+    "_search_head_clustering"
+  ],
+  "targetWorkloads": [
+    "_search_heads",
+    "_indexers",
+    "_forwarders"
+  ]
+}

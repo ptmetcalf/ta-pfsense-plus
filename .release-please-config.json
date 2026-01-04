@@ -1,0 +1,20 @@
+{
+  "release-type": "simple",
+  "include-v-in-tag": true,
+  "packages": {
+    ".": {
+      "extra-files": [
+        {
+          "type": "json",
+          "path": "app.manifest",
+          "jsonpath": "$.info.id.version"
+        },
+        {
+          "type": "generic",
+          "path": "default/app.conf",
+          "pattern": "version = (?<version>\\d+\\.\\d+\\.\\d+)"
+        }
+      ]
+    }
+  }
+}
