@@ -10,7 +10,7 @@
           "jsonpath": "$.info.id.version"
         },
         {
-          "type": "regex",
+          "type": "generic",
           "path": "default/app.conf",
           "pattern": "version = (?<version>\\d+\\.\\d+\\.\\d+)"
         }
