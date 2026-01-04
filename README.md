@@ -126,9 +126,7 @@ The following helper scripts populate environment-specific lookups by pulling
 packaged with the Splunk app.
 
 The app ships empty, header-only CSVs so lookups exist even without local
-enrichment. Provide real CSVs via the local override at
-`$SPLUNK_HOME/etc/apps/ta-pfsense-plus/local/lookup_table_files.conf` when
-you want dashboard enrichment.
+enrichment.
 
 * `tools/splunk-pfsense-dns-lookup.sh`
   * Output: `lookups/pfsense_dns_hosts.csv`
@@ -137,8 +135,51 @@ you want dashboard enrichment.
 * `tools/splunk-pfsense-interface-lookup.sh`
   * Output: `lookups/pfsense_interface_map.csv`
 
-Run them wherever you have SSH access, then load the CSVs into Splunk
-using your preferred method (UI upload, app deployment, etc.).
+Run them wherever you have SSH access, then load the CSVs into Splunk.
+
+### Recommended: companion lookup app (upgrade-safe)
+
+To keep enrichment data safe from app upgrades, use a small companion app
+(for example, `ta-pfsense-plus-local`) that only contains your CSVs.
+
+Example layout:
+
+```
+$SPLUNK_HOME/etc/apps/ta-pfsense-plus-local/
+├── default/
+│   └── lookup_table_files.conf
+├── lookups/
+│   ├── pfsense_dns_hosts.csv
+│   ├── pfsense_filter_rule_map.csv
+│   └── pfsense_interface_map.csv
+└── metadata/
+    └── default.meta
+```
+
+1. Create the companion app with a `lookups/` directory and a
+   `default/lookup_table_files.conf` that lists the three CSVs.
+2. Override the TA lookup definitions with a local `transforms.conf` so the
+   TA points at the companion app.
+
+Example `ta-pfsense-plus/local/transforms.conf`:
+
+```
+[pfsense_filter_rule_map]
+filename = $SPLUNK_HOME/etc/apps/ta-pfsense-plus-local/lookups/pfsense_filter_rule_map.csv
+
+[pfsense_dns_hosts]
+filename = $SPLUNK_HOME/etc/apps/ta-pfsense-plus-local/lookups/pfsense_dns_hosts.csv
+
+[pfsense_interface_map]
+filename = $SPLUNK_HOME/etc/apps/ta-pfsense-plus-local/lookups/pfsense_interface_map.csv
+```
+
+Then reload lookups (UI or `/services/data/lookup-table-files/_reload`).
+
+### Alternative (simpler, not upgrade-safe)
+
+Copy the generated CSVs directly into `ta-pfsense-plus/lookups/`. This works
+without any overrides, but upgrades can overwrite your data.
 
 ## Notes
 
