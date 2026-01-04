@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.3](https://github.com/ptmetcalf/ta-pfsense-plus/compare/v1.0.2...v1.0.3) (2026-01-04)
+
+
+### Bug Fixes
+
+* update release workflow to handle published releases and improve TAG_NAME resolution ([982cc7a](https://github.com/ptmetcalf/ta-pfsense-plus/commit/982cc7aa3373a6650a16249ca6c4e05f77c45458))
+
 ## [1.0.2](https://github.com/ptmetcalf/ta-pfsense-plus/compare/v1.0.1...v1.0.2) (2026-01-04)
 
 
