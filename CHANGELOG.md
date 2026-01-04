@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.1.0](https://github.com/ptmetcalf/ta-pfsense-plus/compare/v1.0.0...v1.1.0) (2026-01-04)
+
+
+### Features
+
+* enhance time parsing for iplog and dnsbl entries in props.conf ([249a03e](https://github.com/ptmetcalf/ta-pfsense-plus/commit/249a03e62ae3f2020aa8e115d962ebfc08ea03fa))
+* streamline environment variable usage in release workflow ([9002748](https://github.com/ptmetcalf/ta-pfsense-plus/commit/90027481f53446b781ee0369c3ec79ddc02c04f3))
+
 ## [1.0.0](https://github.com/ptmetcalf/ta-pfsense-plus/compare/v1.0.0...v1.0.0) (2026-01-04)
 
 
