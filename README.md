@@ -137,44 +137,27 @@ enrichment.
 
 Run them wherever you have SSH access, then load the CSVs into Splunk.
 
-### Recommended: companion lookup app (upgrade-safe)
+### Recommended: system/local lookups (upgrade-safe)
 
-To keep enrichment data safe from app upgrades, use a small companion app
-(for example, `ta-pfsense-plus-local`) that only contains your CSVs.
+Splunk lookup files must live in either `$SPLUNK_HOME/etc/system/local/lookups`
+or `$SPLUNK_HOME/etc/<app_name>/lookups`. For upgrade-safe enrichment, use
+system/local:
 
-Example layout:
-
-```
-$SPLUNK_HOME/etc/apps/ta-pfsense-plus-local/
-├── default/
-│   └── lookup_table_files.conf
-├── lookups/
-│   ├── pfsense_dns_hosts.csv
-│   ├── pfsense_filter_rule_map.csv
-│   └── pfsense_interface_map.csv
-└── metadata/
-    └── default.meta
-```
-
-1. Create the companion app with a `lookups/` directory and a
-   `default/lookup_table_files.conf` that lists the three CSVs.
-2. Override the TA lookup definitions with a local `transforms.conf` so the
-   TA points at the companion app.
-
-Example `ta-pfsense-plus/local/transforms.conf`:
+1. Place the CSVs in `$SPLUNK_HOME/etc/system/local/lookups/`.
+2. Create `$SPLUNK_HOME/etc/system/local/lookup_table_files.conf` entries:
 
 ```
 [pfsense_filter_rule_map]
-filename = $SPLUNK_HOME/etc/apps/ta-pfsense-plus-local/lookups/pfsense_filter_rule_map.csv
-
-[pfsense_dns_hosts]
-filename = $SPLUNK_HOME/etc/apps/ta-pfsense-plus-local/lookups/pfsense_dns_hosts.csv
+filename = $SPLUNK_HOME/etc/system/local/lookups/pfsense_filter_rule_map.csv
 
 [pfsense_interface_map]
-filename = $SPLUNK_HOME/etc/apps/ta-pfsense-plus-local/lookups/pfsense_interface_map.csv
+filename = $SPLUNK_HOME/etc/system/local/lookups/pfsense_interface_map.csv
+
+[pfsense_dns_hosts]
+filename = $SPLUNK_HOME/etc/system/local/lookups/pfsense_dns_hosts.csv
 ```
 
-Then reload lookups (UI or `/services/data/lookup-table-files/_reload`).
+Reload lookups (UI or `/services/data/lookup-table-files/_reload`).
 
 ### Alternative (simpler, not upgrade-safe)
 
