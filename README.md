@@ -137,32 +137,15 @@ enrichment.
 
 Run them wherever you have SSH access, then load the CSVs into Splunk.
 
-### Recommended: system lookups (upgrade-safe)
+### Enrichment lookups (simple, app-local)
 
-Splunk lookup files must live in either `$SPLUNK_HOME/etc/system/lookups`
-or `$SPLUNK_HOME/etc/<app_name>/lookups`. For upgrade-safe enrichment, use
-system lookups:
+Splunk resolves these lookups from the app's `lookups/` directory. The app
+ships header-only CSVs so dashboards work even without enrichment. To add
+real data, copy your generated CSVs into:
 
-1. Place the CSVs in `$SPLUNK_HOME/etc/system/lookups/`.
-2. Create `$SPLUNK_HOME/etc/system/local/lookup_table_files.conf` entries:
+`$SPLUNK_HOME/etc/apps/ta-pfsense-plus/lookups/`
 
-```
-[pfsense_filter_rule_map.csv]
-filename = pfsense_filter_rule_map.csv
-
-[pfsense_interface_map.csv]
-filename = pfsense_interface_map.csv
-
-[pfsense_dns_hosts.csv]
-filename = pfsense_dns_hosts.csv
-```
-
-Reload lookups (UI or `/services/data/lookup-table-files/_reload`).
-
-### Alternative (simpler, not upgrade-safe)
-
-Copy the generated CSVs directly into `ta-pfsense-plus/lookups/`. This works
-without any overrides, but upgrades can overwrite your data.
+If you upgrade the app, re-copy your CSVs afterward.
 
 ## Notes
 
