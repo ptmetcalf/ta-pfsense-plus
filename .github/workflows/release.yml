@@ -86,9 +86,9 @@ jobs:
           name: ${{ env.APP_NAME }}-appinspect
           path: ${{ env.APP_NAME }}-appinspect.json
 
-      - name: Create release
+      - name: Upload release asset
         if: ${{ steps.tag.outputs.tag != '' }}
-        uses: softprops/action-gh-release@v2
-        with:
-          tag_name: ${{ steps.tag.outputs.tag }}
-          files: ${{ env.TAR_PATH }}
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release upload "${{ steps.tag.outputs.tag }}" "${TAR_PATH}" --clobber
