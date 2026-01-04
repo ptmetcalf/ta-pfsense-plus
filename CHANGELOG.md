@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.0](https://github.com/ptmetcalf/ta-pfsense-plus/compare/v1.1.0...v1.2.0) (2026-01-04)
+
+
+### Features
+
+* update version patterns in release configuration for better matching ([b977912](https://github.com/ptmetcalf/ta-pfsense-plus/commit/b977912929517b5d0d61d6ddaad6128ee5920045))
+
 ## [1.1.0](https://github.com/ptmetcalf/ta-pfsense-plus/compare/v1.0.0...v1.1.0) (2026-01-04)
 
 
