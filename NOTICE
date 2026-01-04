@@ -1,0 +1,8 @@
+This product includes software developed by Datapunctum GmbH and
+contributors, originally published as "TA-pfsense" under the
+Apache License, Version 2.0.
+
+Original source: https://github.com/barakat-abweh/TA-pfsense
+
+This fork includes modifications for DNSBL simple parsing and
+event timestamp extraction for DNSBL and iplog data.
