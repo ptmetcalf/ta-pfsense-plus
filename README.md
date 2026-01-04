@@ -123,7 +123,11 @@ Ports used:
 
 The following helper scripts populate environment-specific lookups by pulling
 `/cf/conf/config.xml` over SSH. These scripts live in the repo only and are not
-packaged with the Splunk app:
+packaged with the Splunk app.
+
+The generated CSVs are intentionally not shipped with the app. Provide them
+via a local override (system/local or a separate local app) when you want
+dashboard enrichment.
 
 * `tools/splunk-pfsense-dns-lookup.sh`
   * Output: `lookups/pfsense_dns_hosts.csv`
