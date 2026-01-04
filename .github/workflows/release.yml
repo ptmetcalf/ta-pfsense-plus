@@ -36,19 +36,28 @@ jobs:
           TAR_PATH="${RUNNER_TEMP}/${TAR_NAME}"
           python - <<'PY'
           import json
-          import re
           from pathlib import Path
 
           manifest_path = Path("app.manifest")
           app_conf_path = Path("default/app.conf")
           version = json.loads(manifest_path.read_text())["info"]["id"]["version"]
-          text = app_conf_path.read_text()
-          for section in ("launcher", "id"):
-              pattern = rf"(?ms)(\\[{section}\\][^\\[]*?^version\\s*=)\\s*\\d+\\.\\d+\\.\\d+"
-              text, count = re.subn(pattern, rf"\\1 {version}", text)
-              if count == 0:
-                  raise SystemExit(f"Missing version in [{section}] stanza")
-          app_conf_path.write_text(text)
+          lines = app_conf_path.read_text().splitlines()
+          section = None
+          updated = {"launcher": False, "id": False}
+          out = []
+          for line in lines:
+              stripped = line.strip()
+              if stripped.startswith("[") and stripped.endswith("]"):
+                  section = stripped.strip("[]")
+              if section in updated and stripped.startswith("version"):
+                  out.append(f"version = {version}")
+                  updated[section] = True
+              else:
+                  out.append(line)
+          if not all(updated.values()):
+              missing = [key for key, ok in updated.items() if not ok]
+              raise SystemExit(f"Missing version in stanzas: {', '.join(missing)}")
+          app_conf_path.write_text("\n".join(out) + "\n")
           PY
           tar \
             --exclude="ta-pfsense-plus/.git" \
