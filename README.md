@@ -137,24 +137,24 @@ enrichment.
 
 Run them wherever you have SSH access, then load the CSVs into Splunk.
 
-### Recommended: system/local lookups (upgrade-safe)
+### Recommended: system lookups (upgrade-safe)
 
-Splunk lookup files must live in either `$SPLUNK_HOME/etc/system/local/lookups`
+Splunk lookup files must live in either `$SPLUNK_HOME/etc/system/lookups`
 or `$SPLUNK_HOME/etc/<app_name>/lookups`. For upgrade-safe enrichment, use
-system/local:
+system lookups:
 
-1. Place the CSVs in `$SPLUNK_HOME/etc/system/local/lookups/`.
+1. Place the CSVs in `$SPLUNK_HOME/etc/system/lookups/`.
 2. Create `$SPLUNK_HOME/etc/system/local/lookup_table_files.conf` entries:
 
 ```
-[pfsense_filter_rule_map]
-filename = $SPLUNK_HOME/etc/system/local/lookups/pfsense_filter_rule_map.csv
+[pfsense_filter_rule_map.csv]
+filename = pfsense_filter_rule_map.csv
 
-[pfsense_interface_map]
-filename = $SPLUNK_HOME/etc/system/local/lookups/pfsense_interface_map.csv
+[pfsense_interface_map.csv]
+filename = pfsense_interface_map.csv
 
-[pfsense_dns_hosts]
-filename = $SPLUNK_HOME/etc/system/local/lookups/pfsense_dns_hosts.csv
+[pfsense_dns_hosts.csv]
+filename = pfsense_dns_hosts.csv
 ```
 
 Reload lookups (UI or `/services/data/lookup-table-files/_reload`).
