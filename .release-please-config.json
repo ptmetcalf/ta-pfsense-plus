@@ -12,7 +12,12 @@
         {
           "type": "generic",
           "path": "default/app.conf",
-          "pattern": "version = (?<version>\\d+\\.\\d+\\.\\d+)"
+          "pattern": "(?m)^\\[launcher\\][\\s\\S]*?^version = (?<version>\\d+\\.\\d+\\.\\d+)"
+        },
+        {
+          "type": "generic",
+          "path": "default/app.conf",
+          "pattern": "(?m)^\\[id\\][\\s\\S]*?^version = (?<version>\\d+\\.\\d+\\.\\d+)"
         }
       ]
     }
