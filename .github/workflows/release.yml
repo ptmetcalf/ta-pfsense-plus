@@ -1,0 +1,66 @@
+name: release
+
+on:
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: write
+
+jobs:
+  build-and-release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Create app archive
+        run: |
+          APP_NAME="ta-pfsense-plus"
+          TAR_NAME="${APP_NAME}-${GITHUB_REF_NAME}.tgz"
+          TAR_PATH="${RUNNER_TEMP}/${TAR_NAME}"
+          tar \
+            --exclude="ta-pfsense-plus/.git" \
+            --exclude="ta-pfsense-plus/.github" \
+            --exclude="ta-pfsense-plus/.gitignore" \
+            --exclude="ta-pfsense-plus/.release-please-config.json" \
+            --exclude="ta-pfsense-plus/.release-please-manifest.json" \
+            --exclude="ta-pfsense-plus/.claude" \
+            --exclude="ta-pfsense-plus/.DS_Store" \
+            --exclude="ta-pfsense-plus/.venv-appinspect" \
+            --exclude="ta-pfsense-plus/dist" \
+            --exclude="ta-pfsense-plus/tools" \
+            -czf "${TAR_PATH}" -C .. ta-pfsense-plus
+          echo "TAR_NAME=${TAR_NAME}" >> "$GITHUB_ENV"
+          echo "TAR_PATH=${TAR_PATH}" >> "$GITHUB_ENV"
+          echo "APP_NAME=${APP_NAME}" >> "$GITHUB_ENV"
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install AppInspect
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install splunk-appinspect
+
+      - name: Run AppInspect
+        run: |
+          splunk-appinspect inspect "${TAR_PATH}" \
+            --mode precert \
+            --data-format json \
+            --output-file "${APP_NAME}-appinspect.json" \
+            --ci
+
+      - name: Upload AppInspect report
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ env.APP_NAME }}-appinspect
+          path: ${{ env.APP_NAME }}-appinspect.json
+
+      - name: Create release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: ${{ env.TAR_PATH }}
