@@ -126,8 +126,9 @@ The following helper scripts populate environment-specific lookups by pulling
 packaged with the Splunk app.
 
 The app ships empty, header-only CSVs so lookups exist even without local
-enrichment. Provide real CSVs via a local override (system/local or a
-separate local app) when you want dashboard enrichment.
+enrichment. Provide real CSVs via the local override at
+`$SPLUNK_HOME/etc/apps/ta-pfsense-plus/local/lookup_table_files.conf` when
+you want dashboard enrichment.
 
 * `tools/splunk-pfsense-dns-lookup.sh`
   * Output: `lookups/pfsense_dns_hosts.csv`
