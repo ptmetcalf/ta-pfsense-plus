@@ -1,20 +1,21 @@
+## Sample inputs. Copy to local/inputs.conf, set index, and enable.
 [udp://1514]
-index = pfsense
+index = your_index
 sourcetype = pfsense
 connection_host = dns
 no_appending_timestamp = true
-disabled = 0
+disabled = 1
 
 [udp://1515]
-index = pfsense
+index = your_index
 sourcetype = pfsense:dnsbl
 connection_host = dns
 no_appending_timestamp = true
-disabled = 0
+disabled = 1
 
 [udp://1516]
-index = pfsense
+index = your_index
 sourcetype = pfsense:iplog
 connection_host = dns
 no_appending_timestamp = true
-disabled = 0
+disabled = 1

@@ -18,7 +18,6 @@ and lookups for firewall, DNS, VPN, IDS/IPS, and pfBlockerNG data.
 * `pfsense:openvpn`
 * `pfsense:nginx`
 * `pfsense:unbound`
-* `pfsense:snort`
 * `pfsense:suricata`
 * `pfsense:dnsbl`
 * `pfsense:iplog`
@@ -50,7 +49,7 @@ This TA provides partial support for the following Common Information Models:
 
 - **Network Traffic**: Firewall events (`pfsense:filterlog`)
 - **Authentication**: VPN authentication events (`pfsense:openvpn`)
-- **Intrusion Detection**: Snort/Suricata alerts (`pfsense:snort`, `pfsense:suricata`)
+- **Intrusion Detection**: Suricata alerts (`pfsense:suricata`)
 - **Network Resolution**: DNS queries (`pfsense:unbound`)
 
 ## Contributing
@@ -128,12 +127,20 @@ packaged with the Splunk app.
 The app ships empty, header-only CSVs so lookups exist even without local
 enrichment.
 
-* `tools/splunk-pfsense-dns-lookup.sh`
-  * Output: `lookups/pfsense_dns_hosts.csv`
-* `tools/splunk-pfsense-rule-lookup.sh`
-  * Output: `lookups/pfsense_filter_rule_map.csv`
-* `tools/splunk-pfsense-interface-lookup.sh`
-  * Output: `lookups/pfsense_interface_map.csv`
+* `tools/pfsense-lookups.py dns`
+  * Output: `lookups/pfsense_dns_hosts_enrichment.csv`
+* `tools/pfsense-lookups.py rules`
+  * Output: `lookups/pfsense_filter_rule_map_enrichment.csv`
+* `tools/pfsense-lookups.py interfaces`
+  * Output: `lookups/pfsense_interface_map_enrichment.csv`
+* `tools/pfsense-lookups.py enrichment`
+  * Outputs: `lookups/pfsense_*_enrichment.csv` (zone subnets, port aliases, gateways, interface IPs)
+
+Generate all lookups in one run:
+
+```
+tools/pfsense-lookups.py all --host <pfsense-ip>
+```
 
 Run them wherever you have SSH access, then load the CSVs into Splunk.
 
