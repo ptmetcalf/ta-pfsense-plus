@@ -154,6 +154,40 @@ real data, copy your generated CSVs into:
 
 If you upgrade the app, re-copy your CSVs afterward.
 
+### Enrichment lookups (persistent, outside the app)
+
+If you want enrichment data to survive app upgrades, point the lookups at an
+external directory and store CSVs there. Override the lookup table file paths
+in a local config, for example:
+
+`$SPLUNK_HOME/etc/apps/ta-pfsense-plus/local/lookup_table_files.conf`
+
+```
+[pfsense_filter_rule_map]
+filename = /opt/splunk/lookups/pfsense_filter_rule_map_enrichment.csv
+
+[pfsense_interface_map]
+filename = /opt/splunk/lookups/pfsense_interface_map_enrichment.csv
+
+[pfsense_dns_hosts]
+filename = /opt/splunk/lookups/pfsense_dns_hosts_enrichment.csv
+
+[pfsense_zone_subnets]
+filename = /opt/splunk/lookups/pfsense_zone_subnets_enrichment.csv
+
+[pfsense_alias_ports]
+filename = /opt/splunk/lookups/pfsense_alias_ports_enrichment.csv
+
+[pfsense_interface_ips]
+filename = /opt/splunk/lookups/pfsense_interface_ips_enrichment.csv
+
+[pfsense_gateway_ips]
+filename = /opt/splunk/lookups/pfsense_gateway_ips_enrichment.csv
+```
+
+Then place your generated CSVs in the external directory. This keeps the app
+package pristine while allowing per-environment enrichment data.
+
 ## Notes
 
 * DNSBL and IP log timestamps are parsed from the event payload.
