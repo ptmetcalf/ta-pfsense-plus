@@ -80,8 +80,8 @@ dest_port,transport,app
 "51","udp",la-maint
 "52","tcp",xns-time
 "52","udp",xns-time
-"53","tcp",domain
-"53","udp",domain
+"53","tcp",dns
+"53","udp",dns
 "54","tcp",xns-ch
 "54","udp",xns-ch
 "55","tcp",isi-gl
@@ -1384,6 +1384,7 @@ dest_port,transport,app
 "829","udp",pkix-3-ca-ra
 "847","tcp",dhcp-failover2
 "847","udp",dhcp-failover2
+"853","tcp",dot
 "871","tcp",supfilesrv
 "873","tcp",rsync
 "873","udp",rsync
@@ -1628,6 +1629,7 @@ dest_port,transport,app
 "1185","udp",catchpole
 "1188","tcp",hp-webadmin
 "1188","udp",hp-webadmin
+"1194","udp",openvpn
 "1199","tcp",dmidi
 "1199","udp",dmidi
 "1200","tcp",scol
@@ -2034,8 +2036,8 @@ dest_port,transport,app
 "1398","udp",video-activmail
 "1399","tcp",cadkey-licman
 "1399","udp",cadkey-licman
-"1400","tcp",cadkey-tablet
-"1400","udp",cadkey-tablet
+"1400","tcp",sonos
+"1400","udp",sonos
 "1401","tcp",goldleaf-licman
 "1401","udp",goldleaf-licman
 "1402","tcp",prm-sm-np
@@ -3015,8 +3017,8 @@ dest_port,transport,app
 "1881","udp",ibm-mqseries2
 "1882","tcp",ecsqdmn
 "1882","udp",ecsqdmn
-"1883","tcp",ibm-mqisdp
-"1883","udp",ibm-mqisdp
+"1883","tcp",mqtt
+"1883","udp",mqtt
 "1884","tcp",idmaps
 "1884","udp",idmaps
 "1885","tcp",vrtstrapserver
@@ -5580,6 +5582,8 @@ dest_port,transport,app
 "3470","tcp",jt400
 "3470","udp",jt400
 "3471","tcp",jt400-ssl
+"3478","udp",stun
+"3479","udp",stun
 "3527","udp",ms-mmq
 "3535","tcp",ms-la
 "3535","udp",ms-la
@@ -5587,6 +5591,7 @@ dest_port,transport,app
 "3563","udp",watcomdebug
 "3600","tcp",sap-msg
 "3603","tcp",polycom-vvws
+"3658","udp",playstation
 "3672","tcp",harlequinorb
 "3672","udp",harlequinorb
 "3709","tcp",ca-idms
@@ -5997,6 +6002,8 @@ dest_port,transport,app
 "5202","udp",targus-getdata2
 "5203","tcp",targus-getdata3
 "5203","udp",targus-getdata3
+"5222","tcp",xmpp-client
+"5228","tcp",google-fcm
 "5232","tcp",sgi-dgl
 "5236","tcp",padl2sim
 "5236","udp",padl2sim
@@ -6030,6 +6037,8 @@ dest_port,transport,app
 "5314","udp",opalis-rbt-ipc
 "5315","tcp",hacl-poll
 "5315","udp",hacl-poll
+"5351","udp",nat-pmp
+"5353","udp",mdns
 "5400","tcp",excerpt
 "5400","udp",excerpt
 "5401","tcp",excerpts
@@ -6779,10 +6788,10 @@ dest_port,transport,app
 "8001","udp",vcom-tunnel
 "8002","tcp",teradataordbms
 "8002","udp",teradataordbms
-"8008","tcp",http-alt
-"8008","udp",http-alt
-"8008","tcp",novell-http
-"8009","tcp",netware-rmgr
+"8008","tcp",chromecast
+"8008","udp",chromecast
+"8009","tcp",chromecast
+"8009","udp",chromecast
 "8010","tcp",wingate
 "8022","tcp",oa-system
 "8022","udp",oa-system
@@ -6797,10 +6806,12 @@ dest_port,transport,app
 "8081","tcp",blackice
 "8081","tcp",nai-epolicy
 "8082","tcp",blackice
+"8096","tcp",jellyfin
 "8100","tcp",xprint-server
 "8100","udp",xprint-server
 "8116","tcp",cp-cluster
 "8116","udp",cp-cluster
+"8123","tcp",home-assistant
 "8130","tcp",indigo-vrmi
 "8130","udp",indigo-vrmi
 "8131","tcp",indigo-vbcp
@@ -6812,8 +6823,8 @@ dest_port,transport,app
 "8161","tcp",patrol-snmp
 "8161","udp",patrol-snmp
 "8192","tcp",snapstream
-"8200","tcp",trivnet1
-"8200","udp",trivnet1
+"8200","tcp",dlna
+"8200","udp",dlna
 "8201","tcp",trivnet2
 "8201","udp",trivnet2
 "8204","tcp",lm-perfworks
@@ -6856,6 +6867,7 @@ dest_port,transport,app
 "8473","udp",vp2p
 "8554","tcp",rtsp-alt
 "8554","udp",rtsp-alt
+"8728","tcp",mikrotik-api
 "8733","tcp",ibus
 "8733","udp",ibus
 "8763","tcp",mc-appserver
@@ -6869,6 +6881,7 @@ dest_port,transport,app
 "8804","udp",truecm
 "8880","tcp",cddbp-alt
 "8880","udp",cddbp-alt
+"8883","tcp",mqtts
 "8888","tcp",ddi-tcp-1
 "8888","udp",ddi-udp-1
 "8888","tcp",sun-answerbook
@@ -6889,6 +6902,7 @@ dest_port,transport,app
 "8900","udp",jmb-cds1
 "8901","tcp",jmb-cds2
 "8901","udp",jmb-cds2
+"8920","tcp",jellyfin
 "9000","tcp",cslistener
 "9000","udp",cslistener
 "9002","tcp",WapPush
@@ -7238,6 +7252,7 @@ dest_port,transport,app
 "25008","udp",icl-twobase9
 "25009","tcp",icl-twobase10
 "25009","udp",icl-twobase10
+"25565","tcp",minecraft
 "25793","tcp",vocaltec-hos
 "25793","udp",vocaltec-hos
 "25901","tcp",niobserver
@@ -7264,7 +7279,9 @@ dest_port,transport,app
 "27007","tcp",flex-lm
 "27008","tcp",flex-lm
 "27009","tcp",flex-lm
-"27015","udp",halflife
+"27015","tcp",steam
+"27015","udp",steam
+"27036","udp",steam
 "27345","tcp",imagepump
 "27345","udp",imagepump
 "27500","tcp",quakeworld
@@ -7297,6 +7314,7 @@ dest_port,transport,app
 "31510","tcp",KingPin
 "31510","udp",KingPin
 "32000","tcp",merak-webmail
+"32400","tcp",plex
 "32768","udp",filenet-tms
 "32769","tcp",filenet-rpc
 "32769","udp",filenet-rpc
@@ -7339,6 +7357,7 @@ dest_port,transport,app
 "40843","tcp",csccfirewall
 "40843","udp",csccfirewall
 "41524","udp",ArcServe
+"41641","udp",tailscale
 "43188","udp",reachout
 "43188","tcp",reachout
 "43189","tcp",ndm-agent-port
@@ -7387,6 +7406,7 @@ dest_port,transport,app
 "51107","tcp",freedom
 "51109","udp",freedom
 "51140","tcp",freedom
+"51820","udp",wireguard
 "61439","tcp",netprowler
 "61440","tcp",netprowler
 "61441","tcp",netprowler

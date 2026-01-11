@@ -7,7 +7,7 @@ and lookups for firewall, DNS, VPN, IDS/IPS, and pfBlockerNG data.
 
 * Parses pfSense logs into structured fields
 * Normalizes common fields for dashboards
-* Optional lookups for rule names, hostnames, and interfaces
+* Optional lookups for rule names, hostnames, interfaces, and local network context
 
 ## Sourcetypes
 
@@ -18,14 +18,13 @@ and lookups for firewall, DNS, VPN, IDS/IPS, and pfBlockerNG data.
 * `pfsense:openvpn`
 * `pfsense:nginx`
 * `pfsense:unbound`
-* `pfsense:snort`
 * `pfsense:suricata`
 * `pfsense:dnsbl`
 * `pfsense:iplog`
 
 ## Install
 
-1. Install from Splunkbase, or copy this app to `$SPLUNK_HOME/etc/apps/TA-pfsense-plus`.
+1. Install from Splunkbase, or copy this app to `$SPLUNK_HOME/etc/apps/ta-pfsense-plus`.
 2. Restart or reload Splunk.
 
 ## Configuration
@@ -50,7 +49,7 @@ This TA provides partial support for the following Common Information Models:
 
 - **Network Traffic**: Firewall events (`pfsense:filterlog`)
 - **Authentication**: VPN authentication events (`pfsense:openvpn`)
-- **Intrusion Detection**: Snort/Suricata alerts (`pfsense:snort`, `pfsense:suricata`)
+- **Intrusion Detection**: Suricata alerts (`pfsense:suricata`)
 - **Network Resolution**: DNS queries (`pfsense:unbound`)
 
 ## Contributing
@@ -123,29 +122,41 @@ Ports used:
 
 The following helper scripts populate environment-specific lookups by pulling
 `/cf/conf/config.xml` over SSH. These scripts live in the repo only and are not
-packaged with the Splunk app.
+packaged with the Splunk app (run them locally after pulling the repo).
 
-The app ships empty, header-only CSVs so lookups exist even without local
-enrichment.
+The app ships KV store collections so lookups exist even without local
+enrichment. The lookup generator prints SPL commands that load the KV store.
+Run the script and paste the output into a Splunk search window.
 
-* `tools/splunk-pfsense-dns-lookup.sh`
-  * Output: `lookups/pfsense_dns_hosts.csv`
-* `tools/splunk-pfsense-rule-lookup.sh`
-  * Output: `lookups/pfsense_filter_rule_map.csv`
-* `tools/splunk-pfsense-interface-lookup.sh`
-  * Output: `lookups/pfsense_interface_map.csv`
+* `tools/pfsense-lookups.py dns`
+  * Output: SPL to load `pfsense_dns_hosts`
+* `tools/pfsense-lookups.py rules`
+  * Output: SPL to load `pfsense_filter_rule_map`
+* `tools/pfsense-lookups.py interfaces`
+  * Output: SPL to load `pfsense_interface_map`
+* `tools/pfsense-lookups.py enrichment`
+  * Output: SPL to load `pfsense_zone_subnets`
 
-Run them wherever you have SSH access, then load the CSVs into Splunk.
+Generate all lookups in one run (prints multiple SPL blocks):
 
-### Enrichment lookups (simple, app-local)
+```
+tools/pfsense-lookups.py all --host <pfsense-ip>
+```
 
-Splunk resolves these lookups from the app's `lookups/` directory. The app
-ships header-only CSVs so dashboards work even without enrichment. To add
-real data, copy your generated CSVs into:
+Run them wherever you have SSH access, then paste the SPL into Splunk Search
+to populate the KV store collections.
 
-`$SPLUNK_HOME/etc/apps/ta-pfsense-plus/lookups/`
+### Enrichment lookups (KV store)
 
-If you upgrade the app, re-copy your CSVs afterward.
+The enrichment lookups are backed by Splunk KV store collections, so they
+survive app upgrades. The generated SPL uses `outputlookup` to overwrite each
+collection with the latest data.
+
+### Enrichment macros
+
+Dashboards call `pfsense_enrich_dns` and `pfsense_enrich_ip_tags`, which are
+defined in this TA. The macros use the enrichment lookups above and become
+no-ops when the KV store collections are empty.
 
 ## Notes
 

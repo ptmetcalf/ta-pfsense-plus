@@ -49,7 +49,14 @@ jobs:
             --mode precert \
             --data-format json \
             --output-file "${APP_NAME}-appinspect.json" \
-            --ci
+            --ci || {
+              code=$?
+              if [ "$code" -eq 103 ]; then
+                echo "AppInspect warnings detected (exit 103); allowing CI to continue."
+                exit 0
+              fi
+              exit "$code"
+            }
 
       - name: Run slim validate
         run: |

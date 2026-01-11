@@ -10,6 +10,9 @@ export = system
 [transforms]
 export = system
 
+[macros]
+export = system
+
 [lookup-table-files]
 export = system
 
@@ -32,4 +35,19 @@ export = system
 export = system
 
 [transforms/pfsense_filter_rule_map]
+export = system
+
+[collections]
+export = system
+
+[collections/pfsense_dns_hosts]
+export = system
+
+[collections/pfsense_filter_rule_map]
+export = system
+
+[collections/pfsense_interface_map]
+export = system
+
+[collections/pfsense_zone_subnets]
 export = system

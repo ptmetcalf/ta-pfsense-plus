@@ -23,3 +23,6 @@ local.meta
 # OS files
 .DS_Store
 Thumbs.db
+
+# Development files
+AGENTS.md
