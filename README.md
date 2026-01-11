@@ -7,7 +7,7 @@ and lookups for firewall, DNS, VPN, IDS/IPS, and pfBlockerNG data.
 
 * Parses pfSense logs into structured fields
 * Normalizes common fields for dashboards
-* Optional lookups for rule names, hostnames, and interfaces
+* Optional lookups for rule names, hostnames, interfaces, and local network context
 
 ## Sourcetypes
 
@@ -24,7 +24,7 @@ and lookups for firewall, DNS, VPN, IDS/IPS, and pfBlockerNG data.
 
 ## Install
 
-1. Install from Splunkbase, or copy this app to `$SPLUNK_HOME/etc/apps/TA-pfsense-plus`.
+1. Install from Splunkbase, or copy this app to `$SPLUNK_HOME/etc/apps/ta-pfsense-plus`.
 2. Restart or reload Splunk.
 
 ## Configuration
@@ -134,7 +134,7 @@ enrichment.
 * `tools/pfsense-lookups.py interfaces`
   * Output: `lookups/pfsense_interface_map_enrichment.csv`
 * `tools/pfsense-lookups.py enrichment`
-  * Outputs: `lookups/pfsense_*_enrichment.csv` (zone subnets, port aliases, gateways, interface IPs)
+  * Outputs: `lookups/pfsense_*_enrichment.csv` (zone subnets, gateways, interface IPs)
 
 Generate all lookups in one run:
 
@@ -144,7 +144,7 @@ tools/pfsense-lookups.py all --host <pfsense-ip>
 
 Run them wherever you have SSH access, then load the CSVs into Splunk.
 
-### Enrichment lookups (simple, app-local)
+### Enrichment lookups (app-local)
 
 Splunk resolves these lookups from the app's `lookups/` directory. The app
 ships header-only CSVs so dashboards work even without enrichment. To add
@@ -154,39 +154,11 @@ real data, copy your generated CSVs into:
 
 If you upgrade the app, re-copy your CSVs afterward.
 
-### Enrichment lookups (persistent, outside the app)
+### Enrichment macros
 
-If you want enrichment data to survive app upgrades, point the lookups at an
-external directory and store CSVs there. Override the lookup table file paths
-in a local config, for example:
-
-`$SPLUNK_HOME/etc/apps/ta-pfsense-plus/local/lookup_table_files.conf`
-
-```
-[pfsense_filter_rule_map]
-filename = /opt/splunk/lookups/pfsense_filter_rule_map_enrichment.csv
-
-[pfsense_interface_map]
-filename = /opt/splunk/lookups/pfsense_interface_map_enrichment.csv
-
-[pfsense_dns_hosts]
-filename = /opt/splunk/lookups/pfsense_dns_hosts_enrichment.csv
-
-[pfsense_zone_subnets]
-filename = /opt/splunk/lookups/pfsense_zone_subnets_enrichment.csv
-
-[pfsense_alias_ports]
-filename = /opt/splunk/lookups/pfsense_alias_ports_enrichment.csv
-
-[pfsense_interface_ips]
-filename = /opt/splunk/lookups/pfsense_interface_ips_enrichment.csv
-
-[pfsense_gateway_ips]
-filename = /opt/splunk/lookups/pfsense_gateway_ips_enrichment.csv
-```
-
-Then place your generated CSVs in the external directory. This keeps the app
-package pristine while allowing per-environment enrichment data.
+Dashboards call `pfsense_enrich_dns` and `pfsense_enrich_ip_tags`, which are
+defined in this TA. The macros use the enrichment lookups above and become
+no-ops when the CSVs are empty.
 
 ## Notes
 

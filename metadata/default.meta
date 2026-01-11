@@ -10,6 +10,9 @@ export = system
 [transforms]
 export = system
 
+[macros]
+export = system
+
 [lookup-table-files]
 export = system
 

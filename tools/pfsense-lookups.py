@@ -432,6 +432,14 @@ def _expand_ports(token: str) -> List[str]:
     return [token]
 
 
+def _normalize_cidr(ipaddr: str, subnet: str) -> str:
+    try:
+        network = ipaddress.ip_network(f"{ipaddr}/{subnet}", strict=False)
+    except ValueError:
+        return f"{ipaddr}/{subnet}"
+    return str(network)
+
+
 def parse_enrichment_interfaces(root: ET.Element) -> Tuple[List[Dict[str, str]], List[Dict[str, str]]]:
     iface_rows: List[Dict[str, str]] = []
     subnet_rows: List[Dict[str, str]] = []
@@ -451,11 +459,11 @@ def parse_enrichment_interfaces(root: ET.Element) -> Tuple[List[Dict[str, str]],
         if ipaddr and ipaddr.lower() not in ("dhcp", "pppoe"):
             iface_rows.append({"ip": ipaddr, "interface": descr})
             if subnet:
-                subnet_rows.append({"cidr": f"{ipaddr}/{subnet}", "zone": descr})
+                subnet_rows.append({"cidr": _normalize_cidr(ipaddr, subnet), "zone": descr})
 
         if alias_addr and alias_subnet:
             iface_rows.append({"ip": alias_addr, "interface": descr})
-            subnet_rows.append({"cidr": f"{alias_addr}/{alias_subnet}", "zone": descr})
+            subnet_rows.append({"cidr": _normalize_cidr(alias_addr, alias_subnet), "zone": descr})
 
     return iface_rows, subnet_rows
 
@@ -473,29 +481,6 @@ def parse_enrichment_gateways(root: ET.Element) -> List[Dict[str, str]]:
     return rows
 
 
-def parse_enrichment_aliases(root: ET.Element) -> Dict[str, Set[str]]:
-    port_map: Dict[str, Set[str]] = {}
-
-    aliases = root.find("aliases")
-    if aliases is None:
-        return port_map
-
-    for alias in aliases.findall("alias"):
-        name = _safe_text(alias.find("name"))
-        alias_type = _safe_text(alias.find("type"))
-        address = _safe_text(alias.find("address"))
-
-        if not name or not address:
-            continue
-
-        if alias_type == "port":
-            for token in _split_tokens(address):
-                for port in _expand_ports(token):
-                    port_map.setdefault(port, set()).add(name)
-
-    return port_map
-
-
 def write_csv(path: Path, fieldnames: List[str], rows: List[Dict[str, str]]) -> None:
     ensure_parent_dir(path)
     with path.open("w", encoding="utf-8", newline="") as handle:
@@ -508,16 +493,10 @@ def write_csv(path: Path, fieldnames: List[str], rows: List[Dict[str, str]]) -> 
 def write_enrichment_lookups(root: ET.Element, output_dir: Path) -> None:
     iface_rows, subnet_rows = parse_enrichment_interfaces(root)
     gateway_rows = parse_enrichment_gateways(root)
-    port_map = parse_enrichment_aliases(root)
-    port_rows = [
-        {"port": port, "aliases": ", ".join(sorted(aliases))}
-        for port, aliases in sorted(port_map.items(), key=lambda item: int(item[0]))
-    ]
 
     write_csv(output_dir / "pfsense_interface_ips_enrichment.csv", ["ip", "interface"], iface_rows)
     write_csv(output_dir / "pfsense_zone_subnets_enrichment.csv", ["cidr", "zone"], subnet_rows)
     write_csv(output_dir / "pfsense_gateway_ips_enrichment.csv", ["ip", "name"], gateway_rows)
-    write_csv(output_dir / "pfsense_alias_ports_enrichment.csv", ["port", "aliases"], port_rows)
 
 
 def default_output_path(filename: str) -> Path:
@@ -569,7 +548,7 @@ def parse_args() -> argparse.Namespace:
 
     enrichment_parser = subparsers.add_parser(
         "enrichment",
-        help="Generate port alias/zone/gateway/interface IP enrichment lookups",
+        help="Generate zone/gateway/interface IP enrichment lookups",
     )
     add_common_args(enrichment_parser)
     enrichment_parser.add_argument(
