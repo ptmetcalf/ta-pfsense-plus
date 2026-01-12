@@ -14,6 +14,13 @@
 * drop invalid TIME_DELIMITER settings in props.conf
 * update docs for enrichment lookup storage and overrides
 
+## [1.1.0](https://github.com/ptmetcalf/ta-pfsense-plus/compare/v1.0.1...v1.1.0) (2026-01-12)
+
+
+### Miscellaneous Chores
+
+* release-as 1.1.0 ([8c54fb2](https://github.com/ptmetcalf/ta-pfsense-plus/commit/8c54fb2a2cf8e4b567bd5c0cf19d990326bd7c9a))
+
 ## [1.0.1](https://github.com/ptmetcalf/ta-pfsense-plus/compare/v1.0.0...v1.0.1) (2026-01-04)
 
 
